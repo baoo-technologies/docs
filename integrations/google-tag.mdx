@@ -1,0 +1,83 @@
+---
+  title: "Google Tag Manager"
+  description: "Load the Homie AI chat bubble through GTM in less than a minute."
+---
+
+<Note>
+  GTM lets you roll out Homie without touching theme code — perfect when
+  multiple properties share the same container.
+</Note>
+
+---
+
+## 1 • Copy your embed script
+
+Open the assistant in your **Homie dashboard** → **Connect** and click <kbd>Script kopieren</kbd>.
+
+<div className="my-4">
+  <img
+    src="/images/integrations/connect.png"
+    alt="Homie dashboard – Connect tab with script snippet"
+    className="rounded-lg shadow"
+  />
+</div>
+
+---
+
+## 2 • Add a new tag in GTM
+
+1. Log into **tagmanager.google.com** and select your container.
+2. Click **Add a new tag** → choose **Custom HTML**.
+
+Paste the snippet — it already contains your `chatbotId` and domain:
+
+```html
+<script>
+  (function () {
+    window.homieBotConfig = {
+      chatbotId: "YOUR_CHATBOT_ID",
+      domain: "https://chat.yourhomie.ai",
+    };
+    var script = document.createElement("script");
+    script.src = "https://cdn.yourhomie.ai/embed.min.js";
+    script.defer = true;
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", function () {
+        document.body.appendChild(script);
+      });
+    } else {
+      document.body.appendChild(script);
+    }
+  })();
+</script>
+```
+
+---
+
+## 3 • Set the trigger
+
+Choose **All Pages** so the chat bubble loads site‑wide.
+
+<div className="my-4">
+  <img
+    src="/images/integrations/gtm/gtm.png"
+    alt="GTM – All Pages trigger"
+    className="rounded-lg shadow"
+  />
+</div>
+
+---
+
+## 4 • Publish
+
+Click **Submit** → **Publish**. GTM deploys the tag instantly.
+
+That’s it — refresh your site and the Homie bubble appears in the bottom‑right corner. **Let the conversations (and sales) begin!**
+
+---
+
+### Troubleshooting
+
+- **Tag fires but no bubble?** Disable any script blockers and clear cache.
+- **Only on specific pages?** Adjust the trigger to a "Page View" rule.
+- **Multiple environments?** Use GTM’s built‑in environments to test before production.

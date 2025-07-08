@@ -11,27 +11,30 @@
   "navigation": {
     "tabs": [
       {
-        "tab": "Guides",
+        "tab": "User Guides",
         "groups": [
           {
-            "group": "Get Started",
-            "pages": ["index", "quickstart", "development"]
+            "group": "Quick Start",
+            "pages": ["user-guides/quick-start/introduction"]
           },
           {
-            "group": "Essentials",
-            "pages": [
-              "essentials/markdown",
-              "essentials/code",
-              "essentials/images",
-              "essentials/settings",
-              "essentials/navigation",
-              "essentials/reusable-snippets"
-            ]
+            "group": "Team",
+            "pages": ["user-guides/team/manage", "user-guides/team/usage"]
+          }
+        ]
+      },
+
+      {
+        "tab": "Integrations",
+        "groups": [
+          {
+            "group": "Integrations",
+            "pages": ["integrations/shopify", "integrations/google-tag"]
           }
         ]
       },
       {
-        "tab": "API Reference",
+        "tab": "Developer Guides",
         "groups": [
           {
             "group": "Overview",
@@ -47,18 +50,8 @@
     "global": {
       "anchors": [
         {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Community",
-          "href": "https://mintlify.com/community",
-          "icon": "slack"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
+          "anchor": "Home",
+          "href": "https://yourhomie.ai",
           "icon": "newspaper"
         }
       ]
@@ -72,20 +65,19 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:hallo@yourhomie.ai"
       }
     ],
     "primary": {
       "type": "button",
       "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
+      "href": "https://app.yourhomie.ai"
     }
   },
   "footer": {
     "socials": {
-      "x": "https://x.com/mintlify",
-      "github": "https://github.com/mintlify",
-      "linkedin": "https://linkedin.com/company/mintlify"
+      "x": "https://x.com/homie-ai",
+      "linkedin": "https://www.linkedin.com/company/homieai"
     }
   }
 }

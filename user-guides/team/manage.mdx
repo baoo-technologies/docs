@@ -1,0 +1,50 @@
+---
+  title: "Manage Members"
+  description: "Invite colleagues and control permissions in your Homie AI workspace — secured by BetterAuth."
+---
+
+<Note>
+  Every Homie account represents **one workspace (team)**. You can’t create
+  additional teams, but you can invite unlimited teammates.
+</Note>
+
+## Where to manage members
+
+1. Open **Settings** in the main navigation.
+2. Select **Members** in the left‑hand tab bar.
+3. Use the **Invite** form at the top of the page.
+
+<div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-6">
+  <img
+    src="/images/team-invite.png"
+    alt="Invite new member form"
+    className="rounded-lg shadow"
+  />
+  <img
+    src="/images/team-roles.png"
+    alt="Role selection (Member vs Admin)"
+    className="rounded-lg shadow"
+  />
+</div>
+
+<Warning>
+  Invitation links are valid for **24 hours**. If they expire, simply send a new
+  one — the old link becomes invalid.
+</Warning>
+
+## Roles & permissions
+
+Homie keeps it simple: **Member** and **Admin**.
+
+| Capability                               | Member | Admin |
+| ---------------------------------------- | :----: | :---: |
+| View & train AI assistants               |   ✅   |  ✅   |
+| Manage knowledge sources                 |   ✅   |  ✅   |
+| Create / delete assistants               |   ❌   |  ✅   |
+| Invite / remove members                  |   ❌   |  ✅   |
+| Change billing, plan, workspace settings |   ❌   |  ✅   |
+
+<Tip>
+  Need more fine‑grained control? Role‑based API keys let you restrict actions
+  programmatically. See the [API auth guide](/developer‑guides/authentication).
+</Tip>
