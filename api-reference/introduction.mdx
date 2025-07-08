@@ -1,31 +1,42 @@
 ---
   title: "Introduction"
-  description: "Integrate Homie AI into your product via REST — create chats, send messages, own the UX."
+  description: "Homie AI REST API – spin up chats, send messages, own the UX."
 ---
 
 <Note>
-  Homie exposes every chat capability through a simple JSON/HTTPS API. To get
-  started you only need a **server‑side API key** and the **chatbotId** of the
-  assistant you created in the dashboard.
+  • Add <code>x-api-key: &lt;your&nbsp;key&gt;</code> to <strong>every</strong>{" "}
+  request.
+  <br />• All identifiers (<code>chatId</code>, <code>chatbotId</code>,{" "}
+  <code>messageId</code>, <code>userId</code>, <code>organizationId</code>) are
+  UUID‑v4 strings.
 </Note>
+
+## Environments
+
+| Environment | Base URL                           | Use case                  |
+| ----------- | ---------------------------------- | ------------------------- |
+| Staging     | `https://staging.api.yourhomie.ai` | Build & test integrations |
+| Production  | `https://api.yourhomie.ai`         | Live traffic              |
+
+---
 
 ## 3‑Step Flow
 
-| Step               | Endpoint                               | Purpose                                                                                 |
-| ------------------ | -------------------------------------- | --------------------------------------------------------------------------------------- |
-| 1 • Create chat    | **POST** `/v1/chats`                   | Spin up a new conversation and receive its `chatId`. Pass your `chatbotId` in the body. |
-| 2 • Add messages   | **POST** `/v1/chats/{chatId}/messages` | Send user text, receive Homie’s answer (plus product recommendations, flags, etc.).     |
-| 3 • Listen / fetch | **GET** `/v1/chats/{chatId}/events`    | (Optional) Stream events in real time or poll your preferred endpoint.                  |
+| Step               | Endpoint                               | Purpose                                                                                                  |
+| ------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------- |
+| 1 • Create chat    | **POST** `/v1/chats`                   | Start a new conversation; returns its <code>chatId</code>. Pass your <code>chatbotId</code> in the body. |
+| 2 • Add message    | **POST** `/v1/chats/{chatId}/messages` | Send user text, receive Homie’s reply (incl. product objects, flags, etc.).                              |
+| 3 • Listen / fetch | **GET** `/v1/chats/{chatId}/events`    | (Optional) Stream events in real time or poll.                                                           |
 
 ### 1. Create a chat
 
 ```bash
-curl -X POST https://api.homie.ai/v1/chats \
-  -H "Authorization: Bearer $HOMIE_API_KEY" \
+curl -X POST https://staging.api.yourhomie.ai/v1/chats \
+  -H "x-api-key: $HOMIE_STAGING_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "chatbotId": "cbt_1234567890",
-    "userId": "user_42"
+    "chatbotId": "5e9c1a2b-3d4e-4f60-b2f2-9f4b1c2d3e4f",
+    "userId": "1bd2e7c4-8a90-4b17-9f36-6e2b5d8f7a3e"
   }'
 ```
 
@@ -33,21 +44,21 @@ curl -X POST https://api.homie.ai/v1/chats \
 
 ```jsonc
 {
-  "id": "chat_abc123",
-  "chatbotId": "cbt_1234567890",
-  "userId": "user_42",
-  "organizationId": "org_99",
-  "createdAt": "2024-06-12T07:24:01Z",
+  "id": "ab12cd34-ef56-7890-ab12-cd34ef567890",
+  "chatbotId": "5e9c1a2b-3d4e-4f60-b2f2-9f4b1c2d3e4f",
+  "userId": "1bd2e7c4-8a90-4b17-9f36-6e2b5d8f7a3e",
+  "organizationId": "3210cba9-8fed-7c65-4b32-1a0f9e8d7c6b",
+  "createdAt": "2025-07-08T16:32:11Z",
 }
 ```
 
-Save the `id` — you’ll need it for every follow‑up call.
+Save the <code>id</code> — you’ll need it for every follow‑up call.
 
 ### 2. Send the first message
 
 ```bash
-curl -X POST https://api.homie.ai/v1/chats/chat_abc123/messages \
-  -H "Authorization: Bearer $HOMIE_API_KEY" \
+curl -X POST https://staging.api.yourhomie.ai/v1/chats/ab12cd34-ef56-7890-ab12-cd34ef567890/messages \
+  -H "x-api-key: $HOMIE_STAGING_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "message": "Does the blue hoodie come in size L?",
@@ -55,14 +66,14 @@ curl -X POST https://api.homie.ai/v1/chats/chat_abc123/messages \
   }'
 ```
 
-Homie replies with structured data:
+**Reply (truncated)**
 
 ```jsonc
 {
-  "id": "msg_987",
-  "chatId": "chat_abc123",
+  "id": "f1e2d3c4-b5a6-7890-b1c2-d3e4f5a6b7c8",
+  "chatId": "ab12cd34-ef56-7890-ab12-cd34ef567890",
   "type": "answer",
-  "content": "Yes! Size L is in stock…",
+  "content": "Yes! Size L is in stock…",
   "products": [
     {
       "gtin": "1234567890123",
@@ -75,6 +86,19 @@ Homie replies with structured data:
       "availability": { "status": "in_stock", "quantity": 12 },
     },
   ],
-  "createdAt": "2024-06-12T07:24:05Z",
+  "createdAt": "2025-07-08T16:32:15Z",
 }
 ```
+
+### 3. Listen for events (optional)
+
+```bash
+curl https://staging.api.yourhomie.ai/v1/chats/ab12cd34-ef56-7890-ab12-cd34ef567890/events \
+  -H "x-api-key: $HOMIE_STAGING_KEY"
+```
+
+You’ll receive a server‑sent stream (`text/event-stream`) with message chunks and typing indicators.
+
+---
+
+Ready to go live? Swap the base URL for `https://api.yourhomie.ai` and use your **production key**.
