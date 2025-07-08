@@ -1,216 +1,480 @@
 {
-  "openapi": "3.1.0",
-  "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
-    "version": "1.0.0"
-  },
-  "servers": [
-    {
-      "url": "http://sandbox.mintlify.com"
-    }
-  ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
+  "openapi": "3.0.0",
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/v1/chats": {
       "post": {
-        "description": "Creates a new plant in the store",
+        "operationId": "ChatController_createChat",
+        "summary": "Create Chat",
+        "parameters": [],
         "requestBody": {
-          "description": "Plant to add to the store",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/CreateChatDto"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
-          "200": {
-            "description": "plant response",
+          "201": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ChatDto"
                 }
               }
             }
           }
-        }
+        },
+        "tags": ["Chat"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+    "/v1/chats/{chatId}": {
+      "get": {
+        "operationId": "ChatController_getChat",
+        "summary": "Get Chat",
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
+            "name": "chatId",
             "required": true,
+            "in": "path",
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
-          },
-          "400": {
-            "description": "unexpected error",
+          "200": {
+            "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Error"
+                  "$ref": "#/components/schemas/ChatDto"
                 }
               }
             }
           }
-        }
+        },
+        "tags": ["Chat"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
+    },
+    "/v1/chats/{chatId}/messages": {
       "post": {
-        "description": "Information about a new plant added to the store",
+        "operationId": "ChatController_addMessageToChat",
+        "summary": "Add Message to Chat",
+        "parameters": [
+          {
+            "name": "chatId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "store",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
-          "description": "Plant added to the store",
+          "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/MessageRequestDto"
               }
             }
           }
         },
         "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
-          }
-        }
-      }
-    }
-  },
-  "components": {
-    "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
-        "type": "object",
-        "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
-          }
-        }
-      },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
-          },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageDto"
+                }
               }
             }
+          }
+        },
+        "tags": ["Chat"],
+        "security": [
+          {
+            "bearer": []
           }
         ]
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
-        "type": "object",
-        "properties": {
-          "error": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "message": {
-            "type": "string"
+      "get": {
+        "operationId": "ChatController_getChatMessages",
+        "summary": "List all Chat Messages",
+        "parameters": [
+          {
+            "name": "chatId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
           }
-        }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "allOf": [
+                    {
+                      "properties": {
+                        "items": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/MessageDto"
+                          }
+                        },
+                        "totalItems": {
+                          "type": "number"
+                        },
+                        "size": {
+                          "type": "number"
+                        },
+                        "totalPages": {
+                          "type": "number"
+                        },
+                        "currentPage": {
+                          "type": "number"
+                        },
+                        "hasPrevPage": {
+                          "type": "boolean"
+                        },
+                        "hasNextPage": {
+                          "type": "boolean"
+                        },
+                        "prevPage": {
+                          "type": "number",
+                          "nullable": true
+                        },
+                        "nextPage": {
+                          "type": "number",
+                          "nullable": true
+                        }
+                      },
+                      "required": [
+                        "items",
+                        "totalItems",
+                        "size",
+                        "totalPages",
+                        "currentPage",
+                        "hasPrevPage",
+                        "hasNextPage"
+                      ]
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Chat"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
+
+    "/v1/chats/{chatId}/messages/events": {
+      "get": {
+        "operationId": "ChatController_getEvents",
+        "summary": "Get Message Events",
+        "parameters": [
+          {
+            "name": "chatId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Einzelnes MessageEventDto (wird als SSE-Event gesendet)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MessageEventDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": ["Chat"],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "HomieAI API",
+    "description": "The HomieAI API description",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "tags": [
+    {
+      "name": "Chat",
+      "description": ""
+    }
+  ],
+  "servers": [],
+  "components": {
     "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer"
+      "bearer": {
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "type": "http"
+      }
+    },
+    "schemas": {
+      "CreateChatDto": {
+        "type": "object",
+        "properties": {
+          "chatbotId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          }
+        },
+        "required": ["chatbotId"]
+      },
+      "ChatDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "chatbotId": {
+            "type": "string"
+          },
+          "userId": {
+            "type": "string"
+          },
+          "organizationId": {
+            "type": "string"
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "chatbotId", "userId", "organizationId", "createdAt"]
+      },
+      "MessageRequestDto": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string"
+          },
+          "currentUrl": {
+            "type": "string"
+          }
+        },
+        "required": ["message", "currentUrl"]
+      },
+      "MessageProductLocationDto": {
+        "type": "object",
+        "properties": {
+          "key": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          }
+        },
+        "required": ["key", "value"]
+      },
+      "MessageAvailabilityDto": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "quantity": {
+            "type": "number"
+          }
+        },
+        "required": ["status", "quantity"]
+      },
+      "ProductFlags": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "text": {
+            "type": "string"
+          }
+        },
+        "required": ["type", "title", "text"]
+      },
+      "MessageProductDto": {
+        "type": "object",
+        "properties": {
+          "gtin": {
+            "type": "string"
+          },
+          "brand": {
+            "type": "string"
+          },
+          "designation": {
+            "type": "string"
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          },
+          "image": {
+            "type": "string",
+            "format": "uri"
+          },
+          "price": {
+            "type": "number"
+          },
+          "priceInfo": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "location": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageProductLocationDto"
+            }
+          },
+          "availability": {
+            "$ref": "#/components/schemas/MessageAvailabilityDto"
+          },
+          "category": {
+            "type": "string"
+          },
+          "query": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "recommendationText": {
+            "type": "string"
+          },
+          "flags": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ProductFlags"
+            }
+          }
+        },
+        "required": [
+          "gtin",
+          "brand",
+          "designation",
+          "url",
+          "image",
+          "price",
+          "currency"
+        ]
+      },
+      "MessageDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "chatId": {
+            "type": "string"
+          },
+          "type": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "suggestions": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "products": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/MessageProductDto"
+            }
+          },
+          "createdAt": {
+            "type": "string"
+          }
+        },
+        "required": ["id", "chatId", "type", "content", "createdAt"]
+      },
+      "MessageEventDto": {
+        "type": "object",
+        "properties": {
+          "chatId": {
+            "type": "string",
+            "description": "ID des Chats"
+          },
+          "eventId": {
+            "type": "string",
+            "description": "ID des Events"
+          },
+          "toolName": {
+            "type": "string",
+            "description": "Name des Tools, das verwendet wurde"
+          },
+          "content": {
+            "type": "string",
+            "description": "Inhalt der Nachricht oder Eventbeschreibung"
+          },
+          "toolArgs": {
+            "type": "object",
+            "description": "Optionales Objekt mit Parametern, die an das Tool übergeben wurden"
+          },
+          "toolResponse": {
+            "type": "object",
+            "description": "Optionales Objekt mit der Antwort vom Tool"
+          },
+          "status": {
+            "type": "string",
+            "description": "Status des Events",
+            "enum": ["inProgress", "completed", "failed"]
+          }
+        }
       }
     }
   }
