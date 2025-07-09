@@ -4,22 +4,25 @@ description: "Paste one script, hit Save, and let Homie AI start selling for y
 ---
 
 <Note>
-  No app install needed. Works with every Online Store 2.0 theme (e.g. *Dawn*).
-  Runtime footprint &lt; 5 KB gzipped & deferred.
+  No app install needed. Works with every Online Store 2.0 theme (e.g. _Dawn_).
+  Runtime footprint \< 5 KB gzipped & deferred.
 </Note>
 
 ---
 
 ## 1 • Copy your embed script
 
-Open your assistant in the **Homie dashboard** → **Connect** and click <kbd>copy script</kbd>.
+Open your assistant in the **Homie dashboard** → **Connect** and click <kbd>Skript kopieren </kbd>
+
+.
 
 <div className="my-4">
-  <img
-    src="/images/integrations/connect.png"
-    alt="Homie dashboard – Connect tab with script snippet"
-    className="rounded-lg shadow"
-  />
+<img
+  src="/images/integrations/connect.png"
+  alt="Homie dashboard – Connect tab with script snippet"
+  className="rounded-lg shadow"
+/>
+
 </div>
 
 ---
@@ -29,25 +32,27 @@ Open your assistant in the **Homie dashboard** → **Connect** and click <kbd>co
 **Shopify Admin → Onlineshop → Themes**.
 
 <div className="my-4">
-  <img
-    src="/images/integrations/shopify/shopify-first-step.png"
-    alt="Shopify – navigate to Themes"
-    className="rounded-lg shadow"
-  />
+<img
+  src="/images/integrations/shopify/shopify-first-step.png"
+  alt="Shopify – navigate to Themes"
+  className="rounded-lg shadow"
+/>
+
 </div>
 
 ---
 
-## 3 • Click <em>Code bearbeiten</em>
+## 3 • Click Code bearbeiten
 
 Open the ••• menu next to your live theme and choose **Code bearbeiten**.
 
 <div className="my-4">
-  <img
-    src="/images/integrations/shopify/shopify-secound-step.png"
-    alt="Shopify – Edit code action"
-    className="rounded-lg shadow"
-  />
+<img
+  src="/images/integrations/shopify/shopify-secound-step.png"
+  alt="Shopify – Edit code action"
+  className="rounded-lg shadow"
+/>
+
 </div>
 
 ---
@@ -57,24 +62,16 @@ Open the ••• menu next to your live theme and choose **Code bearbeiten**.
 1. In the sidebar, open **layout/theme.liquid**.
 2. Scroll right to the bottom – just above `</body>`.
 3. Paste the snippet you copied.
-
-```liquid
-<script
-  src="https://cdn.yourhomie.ai/embed.min.js"
-  chatbotId="YOUR_CHATBOT_ID"  <!-- already included in your copied snippet -->
-  defer
-></script>
-```
+4. Click **Speichern** – that’s it. Refresh your store and the Homie chat bubble appears in the bottom‑right corner. **Sales can start rolling in\!**
 
 <div className="my-4">
-  <img
-    src="/images/integrations/shopify/shopify-last-step.png"
-    alt="theme.liquid with Homie script pasted before </body>"
-    className="rounded-lg shadow"
-  />
-</div>
+<img
+  src="/images/integrations/shopify/shopify-last-step.png"
+  alt="theme.liquid with Homie script pasted before </body>"
+  className="rounded-lg shadow"
+/>
 
-Click **Speichern** – that’s it. Refresh your store and the Homie chat bubble appears in the bottom‑right corner. **Sales can start rolling in!**
+</div>
 
 ---
 
