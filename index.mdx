@@ -1,104 +1,46 @@
 ---
-title: "Introduction"
-description: "Turn browsers into buyers with Homie AI…"
+  title: "Introduction"
+  description: "Turn browsers into buyers with Homie AI — the GPT‑powered chat assistant for every store platform."
 ---
 
-<Note>
-  • Add <code>x-api-key: &lt;your&nbsp;key&gt;</code> to <strong>every</strong>{" "}
-  request.
-  <br />• All identifiers (<code>chatId</code>, <code>chatbotId</code>,{" "}
-  <code>messageId</code>, <code>userId</code>, <code>organizationId</code>) are
-  UUID‑v4 strings.
-</Note>
+<img
+  className="block dark:hidden mx-auto"
+  src="/images/hero.png"
+  alt="Homie AI – Hero Light"
+/>
+<img
+  className="hidden dark:block mx-auto"
+  src="/images/homie-hero-dark.png"
+  alt="Homie AI – Hero Dark"
+/>
 
-## Environments
-
-| Environment | Base URL                           | Use case                  |
-| ----------- | ---------------------------------- | ------------------------- |
-| Staging     | `https://staging.api.yourhomie.ai` | Build & test integrations |
-| Production  | `https://api.yourhomie.ai`         | Live traffic              |
-
----
-
-## 3‑Step Flow
-
-| Step               | Endpoint                               | Purpose                                                                                                  |
-| ------------------ | -------------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| 1 • Create chat    | **POST** `/v1/chats`                   | Start a new conversation; returns its <code>chatId</code>. Pass your <code>chatbotId</code> in the body. |
-| 2 • Add message    | **POST** `/v1/chats/{chatId}/messages` | Send user text, receive Homie’s reply (incl. product objects, flags, etc.).                              |
-| 3 • Listen / fetch | **GET** `/v1/chats/{chatId}/events`    | (Optional) Stream events in real time or poll.                                                           |
-
-### 1. Create a chat
-
-```bash
-curl -X POST https://staging.api.yourhomie.ai/v1/chats \
-  -H "x-api-key: $HOMIE_STAGING_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "chatbotId": "5e9c1a2b-3d4e-4f60-b2f2-9f4b1c2d3e4f",
-    "userId": "1bd2e7c4-8a90-4b17-9f36-6e2b5d8f7a3e"
-  }'
-```
-
-**Response**
-
-```jsonc
-{
-  "id": "ab12cd34-ef56-7890-ab12-cd34ef567890",
-  "chatbotId": "5e9c1a2b-3d4e-4f60-b2f2-9f4b1c2d3e4f",
-  "userId": "1bd2e7c4-8a90-4b17-9f36-6e2b5d8f7a3e",
-  "organizationId": "3210cba9-8fed-7c65-4b32-1a0f9e8d7c6b",
-  "createdAt": "2025-07-08T16:32:11Z",
-}
-```
-
-Save the <code>id</code> — you’ll need it for every follow‑up call.
-
-### 2. Send the first message
-
-```bash
-curl -X POST https://staging.api.yourhomie.ai/v1/chats/ab12cd34-ef56-7890-ab12-cd34ef567890/messages \
-  -H "x-api-key: $HOMIE_STAGING_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "message": "Does the blue hoodie come in size L?",
-    "currentUrl": "https://store.com/products/blue-hoodie"
-  }'
-```
-
-**Reply (truncated)**
-
-```jsonc
-{
-  "id": "f1e2d3c4-b5a6-7890-b1c2-d3e4f5a6b7c8",
-  "chatId": "ab12cd34-ef56-7890-ab12-cd34ef567890",
-  "type": "answer",
-  "content": "Yes! Size L is in stock…",
-  "products": [
-    {
-      "gtin": "1234567890123",
-      "brand": "Homie",
-      "designation": "Blue Hoodie",
-      "uri": "https://store.com/products/blue-hoodie",
-      "image": "https://store.com/images/blue-hoodie.png",
-      "price": 59.99,
-      "currency": "EUR",
-      "availability": { "status": "in_stock", "quantity": 12 },
-    },
-  ],
-  "createdAt": "2025-07-08T16:32:15Z",
-}
-```
-
-### 3. Listen for events (optional)
-
-```bash
-curl https://staging.api.yourhomie.ai/v1/chats/ab12cd34-ef56-7890-ab12-cd34ef567890/events \
-  -H "x-api-key: $HOMIE_STAGING_KEY"
-```
-
-You’ll receive a server‑sent stream (`text/event-stream`) with message chunks and typing indicators.
+> **Homie in one sentence**  
+> A GPT‑powered sales rep that understands every visitor, answers product questions instantly, and nudges them to checkout — without adding support load.
 
 ---
 
-Ready to go live? Swap the base URL for `https://api.yourhomie.ai` and use your **production key**.
+## Why merchants choose Homie AI
+
+- **+30 % conversion uplift** — shoppers get the right answer (and product) on the first try.
+- **–70 % support tickets** — Homie handles repetitive "size? stock? shipping?" queries 24 / 7.
+- **10‑minute install** — one‑click for Shopify or drop‑in script for Shopware, Magento, WooCommerce & more.
+- **EU‑only hosting** & GDPR compliance out‑of‑the‑box.
+
+## How Homie works (under the hood)
+
+1. **Index** — Homie syncs your entire product catalog, CMS pages, and FAQs into a vector DB.
+2. **Understand** — GPT‑4o analyses intent, sentiment, and purchase signals in real time.
+3. **Answer & recommend** — combines factual answers with AI‑generated up‑ & cross‑sell suggestions.
+4. **Learn** — every chat feeds analytics so you know which questions block sales.
+
+## Integration in minutes
+
+| Option                     | Best for                     | Setup time                     |
+| -------------------------- | ---------------------------- | ------------------------------ |
+| **Chat Bubble** (floating) | Most stores                  | &lt; 5 min – paste script once |
+| **Inline Widget** (iframe) | Dedicated FAQ / Contact page | ~5 min                         |
+| **Full API**               | Custom UI or mobile app      | Depends on scope               |
+
+---
+
+> Ready to turn chats into sales? Head over to **Install Homie** — you’ll be live before your next coffee. ☕️
