@@ -15,7 +15,7 @@
         "groups": [
           {
             "group": "Quick Start",
-            "pages": ["user-guides/quick-start/introduction"]
+            "pages": ["index"]
           },
           {
             "group": "Team",
