@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Homie Docu",
+  "name": "Homie Documentation",
   "colors": {
     "primary": "#0F23FF",
     "light": "#3F4FFF",
