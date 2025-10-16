@@ -20,6 +20,10 @@
           {
             "group": "Team",
             "pages": ["user-guides/team/manage", "user-guides/team/usage"]
+          },
+          {
+            "group": "Knowledge",
+            "pages": ["user-guides/knowledge/pdp-setup"]
           }
         ]
       },

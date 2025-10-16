@@ -1,5 +1,19 @@
 {
   "openapi": "3.0.0",
+  "info": {
+    "title": "HomieAI API",
+    "description": "The HomieAI API description",
+    "version": "0.0.1",
+    "contact": {}
+  },
+  "servers": [],
+  "tags": [
+    { "name": "Chat", "description": "" },
+    {
+      "name": "Knowledge",
+      "description": "Public, CORS-enabled endpoints for PDP question sets"
+    }
+  ],
   "paths": {
     "/v1/chats": {
       "post": {
@@ -10,9 +24,7 @@
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateChatDto"
-              }
+              "schema": { "$ref": "#/components/schemas/CreateChatDto" }
             }
           }
         },
@@ -21,19 +33,13 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChatDto"
-                }
+                "schema": { "$ref": "#/components/schemas/ChatDto" }
               }
             }
           }
         },
         "tags": ["Chat"],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
+        "security": [{ "bearer": [] }]
       }
     },
     "/v1/chats/{chatId}": {
@@ -45,9 +51,7 @@
             "name": "chatId",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
@@ -55,19 +59,13 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ChatDto"
-                }
+                "schema": { "$ref": "#/components/schemas/ChatDto" }
               }
             }
           }
         },
         "tags": ["Chat"],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
+        "security": [{ "bearer": [] }]
       }
     },
     "/v1/chats/{chatId}/messages": {
@@ -79,26 +77,20 @@
             "name": "chatId",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           },
           {
             "name": "store",
             "required": false,
             "in": "query",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/MessageRequestDto"
-              }
+              "schema": { "$ref": "#/components/schemas/MessageRequestDto" }
             }
           }
         },
@@ -107,19 +99,13 @@
             "description": "",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MessageDto"
-                }
+                "schema": { "$ref": "#/components/schemas/MessageDto" }
               }
             }
           }
         },
         "tags": ["Chat"],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
+        "security": [{ "bearer": [] }]
       },
       "get": {
         "operationId": "ChatController_getChatMessages",
@@ -129,9 +115,7 @@
             "name": "chatId",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
@@ -145,36 +129,16 @@
                       "properties": {
                         "items": {
                           "type": "array",
-                          "items": {
-                            "$ref": "#/components/schemas/MessageDto"
-                          }
+                          "items": { "$ref": "#/components/schemas/MessageDto" }
                         },
-                        "totalItems": {
-                          "type": "number"
-                        },
-                        "size": {
-                          "type": "number"
-                        },
-                        "totalPages": {
-                          "type": "number"
-                        },
-                        "currentPage": {
-                          "type": "number"
-                        },
-                        "hasPrevPage": {
-                          "type": "boolean"
-                        },
-                        "hasNextPage": {
-                          "type": "boolean"
-                        },
-                        "prevPage": {
-                          "type": "number",
-                          "nullable": true
-                        },
-                        "nextPage": {
-                          "type": "number",
-                          "nullable": true
-                        }
+                        "totalItems": { "type": "number" },
+                        "size": { "type": "number" },
+                        "totalPages": { "type": "number" },
+                        "currentPage": { "type": "number" },
+                        "hasPrevPage": { "type": "boolean" },
+                        "hasNextPage": { "type": "boolean" },
+                        "prevPage": { "type": "number", "nullable": true },
+                        "nextPage": { "type": "number", "nullable": true }
                       },
                       "required": [
                         "items",
@@ -193,14 +157,9 @@
           }
         },
         "tags": ["Chat"],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
+        "security": [{ "bearer": [] }]
       }
     },
-
     "/v1/chats/{chatId}/messages/events": {
       "get": {
         "operationId": "ChatController_getEvents",
@@ -210,9 +169,7 @@
             "name": "chatId",
             "required": true,
             "in": "path",
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
@@ -220,157 +177,209 @@
             "description": "Einzelnes MessageEventDto (wird als SSE-Event gesendet)",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/MessageEventDto"
-                }
+                "schema": { "$ref": "#/components/schemas/MessageEventDto" }
               }
             }
           }
         },
         "tags": ["Chat"],
-        "security": [
-          {
-            "bearer": []
+        "security": [{ "bearer": [] }]
+      }
+    },
+
+    "/v1/knowledge/pdp-questions/public/get-questions": {
+      "post": {
+        "operationId": "KnowledgeController_getPdpQuestions",
+        "summary": "PDP Question Set",
+        "description": "Öffentlicher Endpoint für Frontends. Erzeugt oder liefert ein Frage-Set für eine PDP-URL. Zugriff wird über die Origins-Whitelist der zugehörigen Config kontrolliert.",
+        "tags": ["Knowledge"],
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Aktuelle Seiten-URL und Organization-ID.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PdpQuestionsRequestDto"
+              },
+              "examples": {
+                "sample": {
+                  "summary": "Fiktives Beispiel",
+                  "value": {
+                    "url": "https://shop.example.com/p/produkt-abc-12345",
+                    "organizationId": "11111111-2222-3333-4444-555555555555"
+                  }
+                }
+              }
+            }
           }
-        ]
+        },
+        "responses": {
+          "200": {
+            "description": "Existing or newly generated set returned.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PdpQuestionsSetDto",
+                  "nullable": true
+                },
+                "examples": {
+                  "withSet": {
+                    "summary": "Fragen-Set vorhanden",
+                    "value": {
+                      "id": "49113e90-6e30-42d1-8c02-a697c6b47f01",
+                      "organizationId": "11111111-2222-3333-4444-555555555555",
+                      "productTitle": null,
+                      "url": "https://shop.example.com/p/produkt-abc-12345",
+                      "requests": 12,
+                      "createdAt": "2025-10-16T11:44:41.140Z",
+                      "questions": [
+                        {
+                          "id": "f5ae1f7e-9680-497a-b2d6-afbbb1203408",
+                          "text": "Welche Maße hat das Produkt?",
+                          "rank": 1
+                        },
+                        {
+                          "id": "8e0ab7fe-0e23-4efe-835b-8106f9cca314",
+                          "text": "Aus welchem Material besteht es?",
+                          "rank": 2
+                        },
+                        {
+                          "id": "af155d51-7b38-4474-ba2a-d6c19ebccebe",
+                          "text": "Ist es wetterfest?",
+                          "rank": 3
+                        },
+                        {
+                          "id": "8a4d8806-6d47-4726-8aa4-9fb696b33a45",
+                          "text": "Für welche Größe ist es geeignet?",
+                          "rank": 4
+                        }
+                      ]
+                    }
+                  },
+                  "noSet": {
+                    "summary": "Kein Set vorhanden / keine Produktseite",
+                    "value": null
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request (fehlende/ungültige Felder)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "missingUrl": {
+                    "value": { "message": "url must be a valid URI string" }
+                  }
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded",
+            "headers": {
+              "Retry-After": {
+                "schema": { "type": "integer" },
+                "description": "Sekunden bis zum nächsten Versuch"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/RateLimitError" },
+                "examples": {
+                  "rateLimited": {
+                    "value": { "message": "Too Many Requests" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "examples": {
+                  "generic": { "value": { "message": "Internal server error" } }
+                }
+              }
+            }
+          }
+        }
       }
     }
   },
-  "info": {
-    "title": "HomieAI API",
-    "description": "The HomieAI API description",
-    "version": "0.0.1",
-    "contact": {}
-  },
-  "tags": [
-    {
-      "name": "Chat",
-      "description": ""
-    }
-  ],
-  "servers": [],
   "components": {
     "securitySchemes": {
-      "bearer": {
-        "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "type": "http"
-      }
+      "bearer": { "scheme": "bearer", "bearerFormat": "JWT", "type": "http" }
     },
     "schemas": {
       "CreateChatDto": {
         "type": "object",
         "properties": {
-          "chatbotId": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "string"
-          }
+          "chatbotId": { "type": "string" },
+          "userId": { "type": "string" }
         },
         "required": ["chatbotId"]
       },
       "ChatDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "chatbotId": {
-            "type": "string"
-          },
-          "userId": {
-            "type": "string"
-          },
-          "organizationId": {
-            "type": "string"
-          },
-          "createdAt": {
-            "type": "string"
-          }
+          "id": { "type": "string" },
+          "chatbotId": { "type": "string" },
+          "userId": { "type": "string" },
+          "organizationId": { "type": "string" },
+          "createdAt": { "type": "string" }
         },
         "required": ["id", "chatbotId", "userId", "organizationId", "createdAt"]
       },
       "MessageRequestDto": {
         "type": "object",
         "properties": {
-          "message": {
-            "type": "string"
-          },
-          "currentUrl": {
-            "type": "string"
-          }
+          "message": { "type": "string" },
+          "currentUrl": { "type": "string" }
         },
         "required": ["message", "currentUrl"]
       },
       "MessageProductLocationDto": {
         "type": "object",
         "properties": {
-          "key": {
-            "type": "string"
-          },
-          "value": {
-            "type": "string"
-          }
+          "key": { "type": "string" },
+          "value": { "type": "string" }
         },
         "required": ["key", "value"]
       },
       "MessageAvailabilityDto": {
         "type": "object",
         "properties": {
-          "status": {
-            "type": "string"
-          },
-          "quantity": {
-            "type": "number"
-          }
+          "status": { "type": "string" },
+          "quantity": { "type": "number" }
         },
         "required": ["status", "quantity"]
       },
       "ProductFlags": {
         "type": "object",
         "properties": {
-          "type": {
-            "type": "string"
-          },
-          "title": {
-            "type": "string"
-          },
-          "text": {
-            "type": "string"
-          }
+          "type": { "type": "string" },
+          "title": { "type": "string" },
+          "text": { "type": "string" }
         },
         "required": ["type", "title", "text"]
       },
       "MessageProductDto": {
         "type": "object",
         "properties": {
-          "gtin": {
-            "type": "string"
-          },
-          "brand": {
-            "type": "string"
-          },
-          "designation": {
-            "type": "string"
-          },
-          "url": {
-            "type": "string",
-            "format": "uri"
-          },
-          "image": {
-            "type": "string",
-            "format": "uri"
-          },
-          "price": {
-            "type": "number"
-          },
-          "priceInfo": {
-            "type": "string"
-          },
-          "currency": {
-            "type": "string"
-          },
+          "gtin": { "type": "string" },
+          "brand": { "type": "string" },
+          "designation": { "type": "string" },
+          "url": { "type": "string", "format": "uri" },
+          "image": { "type": "string", "format": "uri" },
+          "price": { "type": "number" },
+          "priceInfo": { "type": "string" },
+          "currency": { "type": "string" },
           "location": {
             "type": "array",
             "items": {
@@ -380,23 +389,13 @@
           "availability": {
             "$ref": "#/components/schemas/MessageAvailabilityDto"
           },
-          "category": {
-            "type": "string"
-          },
-          "query": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
-          "recommendationText": {
-            "type": "string"
-          },
+          "category": { "type": "string" },
+          "query": { "type": "string" },
+          "description": { "type": "string" },
+          "recommendationText": { "type": "string" },
           "flags": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductFlags"
-            }
+            "items": { "$ref": "#/components/schemas/ProductFlags" }
           }
         },
         "required": [
@@ -412,47 +411,24 @@
       "MessageDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "string"
-          },
-          "chatId": {
-            "type": "string"
-          },
-          "type": {
-            "type": "string"
-          },
-          "content": {
-            "type": "string"
-          },
-          "suggestions": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
+          "id": { "type": "string" },
+          "chatId": { "type": "string" },
+          "type": { "type": "string" },
+          "content": { "type": "string" },
+          "suggestions": { "type": "array", "items": { "type": "string" } },
           "products": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/MessageProductDto"
-            }
+            "items": { "$ref": "#/components/schemas/MessageProductDto" }
           },
-          "createdAt": {
-            "type": "string"
-          }
+          "createdAt": { "type": "string" }
         },
         "required": ["id", "chatId", "type", "content", "createdAt"]
       },
       "MessageEventDto": {
         "type": "object",
         "properties": {
-          "chatId": {
-            "type": "string",
-            "description": "ID des Chats"
-          },
-          "eventId": {
-            "type": "string",
-            "description": "ID des Events"
-          },
+          "chatId": { "type": "string", "description": "ID des Chats" },
+          "eventId": { "type": "string", "description": "ID des Events" },
           "toolName": {
             "type": "string",
             "description": "Name des Tools, das verwendet wurde"
@@ -475,6 +451,98 @@
             "enum": ["inProgress", "completed", "failed"]
           }
         }
+      },
+
+      "PdpQuestionsRequestDto": {
+        "type": "object",
+        "description": "Request body to fetch or create PDP questions for the given URL.",
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "Aktuelle Seiten-URL (wird serverseitig canonicalized)"
+          },
+          "organizationId": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Organization ID des Shops"
+          }
+        },
+        "required": ["url", "organizationId"],
+        "example": {
+          "url": "https://shop.example.com/p/produkt-abc-12345",
+          "organizationId": "11111111-2222-3333-4444-555555555555"
+        }
+      },
+      "PdpQuestionDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "text": { "type": "string" },
+          "rank": {
+            "type": "integer",
+            "minimum": 1,
+            "description": "1 = höchste Priorität"
+          }
+        },
+        "required": ["id", "text", "rank"]
+      },
+      "PdpQuestionsSetDto": {
+        "type": "object",
+        "description": "Question set for a specific PDP URL. Kann auch `null` sein, wenn kein Set vorhanden.",
+        "properties": {
+          "id": { "type": "string", "format": "uuid" },
+          "organizationId": { "type": "string", "format": "uuid" },
+          "productTitle": { "type": "string", "nullable": true },
+          "url": { "type": "string", "format": "uri" },
+          "requests": { "type": "integer" },
+          "createdAt": { "type": "string", "format": "date-time" },
+          "questions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/PdpQuestionDto" }
+          }
+        },
+        "required": ["id", "organizationId", "url", "createdAt", "questions"],
+        "example": {
+          "id": "49113e90-6e30-42d1-8c02-a697c6b47f01",
+          "organizationId": "11111111-2222-3333-4444-555555555555",
+          "productTitle": null,
+          "url": "https://shop.example.com/p/produkt-abc-12345",
+          "requests": 12,
+          "createdAt": "2025-10-16T11:44:41.140Z",
+          "questions": [
+            {
+              "id": "f5ae1f7e-9680-497a-b2d6-afbbb1203408",
+              "text": "Welche Maße hat das Produkt?",
+              "rank": 1
+            },
+            {
+              "id": "8e0ab7fe-0e23-4efe-835b-8106f9cca314",
+              "text": "Aus welchem Material besteht es?",
+              "rank": 2
+            },
+            {
+              "id": "af155d51-7b38-4474-ba2a-d6c19ebccebe",
+              "text": "Ist es wetterfest?",
+              "rank": 3
+            },
+            {
+              "id": "8a4d8806-6d47-4726-8aa4-9fb696b33a45",
+              "text": "Für welche Größe ist es geeignet?",
+              "rank": 4
+            }
+          ]
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": { "message": { "type": "string" } },
+        "required": ["message"]
+      },
+      "RateLimitError": {
+        "type": "object",
+        "properties": { "message": { "type": "string" } },
+        "required": ["message"]
       }
     }
   }
