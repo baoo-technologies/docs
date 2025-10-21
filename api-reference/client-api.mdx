@@ -1,0 +1,232 @@
+---
+title: "Client API"
+description: "Control the embedded Homie chat widget from your website using the global browser API `window.homieBot`."
+---
+
+<Note>
+  This page documents the **client-side Browser API** exposed by the embed
+  script. For server-side REST endpoints, see your API Reference.
+</Note>
+
+## Overview
+
+Once the Homie embed script is loaded, a global object `window.homieBot` becomes available.
+Use it to open/close the widget, check its state, send messages programmatically, and read the chat history.
+
+## Requirements
+
+1. The script must be embedded on your page.
+2. `chatbotId` and `domain` must be set.
+
+```html
+<script
+  src="https://chat.yourhomie.ai/embed.min.js"
+  chatbotId="YOUR-CHATBOT-ID"
+  domain="https://chat.yourhomie.ai"
+  defer
+></script>
+```
+
+<Warning>
+  The object <code>window.homieBot</code> is only available **after** the script
+  has loaded. If you need to interact early, use the <code>waitForHomie()</code>{" "}
+  helper below.
+</Warning>
+
+---
+
+## API Reference: <code>window.homieBot</code>
+
+### `open()`
+
+Opens the chat (if closed).
+
+```js
+window.homieBot.open();
+```
+
+### `close()`
+
+Closes the chat (if open).
+
+```js
+window.homieBot.close();
+```
+
+### `toggle()`
+
+Toggles between open/closed.
+
+```js
+window.homieBot.toggle();
+```
+
+### `isOpen()` → `boolean`
+
+Returns whether the chat is currently open.
+
+```js
+if (window.homieBot.isOpen()) {
+  console.log("Chat is open");
+}
+```
+
+### `sendMessage(input, options?)` → `Promise<boolean>`
+
+Injects a message directly into the chat — ideal for PDPs or context-driven prompts.
+
+```js
+await window.homieBot.sendMessage(
+  { text: "Do you have this product in grey?" },
+  { open: true } // opens the chat before sending
+);
+```
+
+**`input` (required: `text`)**
+
+| Field        | Type    | Description                                |
+| ------------ | ------- | ------------------------------------------ |
+| `text`       | string  | The message to inject.                     |
+| `id`         | string  | (optional) Your own reference/tracking ID. |
+| `setId`      | string  | (optional) Question set ID for tracking.   |
+| `questionId` | string  | (optional) Question ID within the set.     |
+| `newChat`    | boolean | (optional) Start a new conversation.       |
+
+**`options`**
+
+| Field           | Type    | Default | Description                                 |
+| --------------- | ------- | ------- | ------------------------------------------- |
+| `open`          | boolean | `true`  | Open chat if closed.                        |
+| `maxRetries`    | number  | `3`     | Retries while the iFrame initializes.       |
+| `retryDelay`    | number  | `300`   | Milliseconds between retries.               |
+| `timeout`       | number  | `5000`  | Total timeout in ms waiting for ACK.        |
+| `relaxedOrigin` | boolean | `false` | Disable origin checks (special cases only). |
+
+### `getHistory()` → `Promise<any>`
+
+Returns the current chat history (useful for Custom-Tracking).
+
+```js
+const history = await window.homieBot.getHistory();
+console.log("Chat history:", history);
+```
+
+---
+
+## Practical Examples
+
+### 1) Auto-open after 10 seconds
+
+```js
+setTimeout(() => window.homieBot.open(), 10_000);
+```
+
+### 2) Trigger an intent on a PDP
+
+```js
+window.homieBot.sendMessage({
+  text: "Show me similar drills.",
+  setId: "pdp-questions-set-123",
+});
+```
+
+### 3) Open after scroll depth
+
+```js
+function openAfterScroll(px = 600) {
+  const onScroll = () => {
+    if (window.scrollY > px) {
+      window.homieBot.open();
+      window.removeEventListener("scroll", onScroll);
+    }
+  };
+  window.addEventListener("scroll", onScroll, { passive: true });
+}
+openAfterScroll();
+```
+
+---
+
+## Robust loading: <code>waitForHomie()</code>
+
+If your code runs before the embed has finished loading, wait until `window.homieBot` exists:
+
+```js
+function waitForHomie() {
+  return new Promise((resolve) => {
+    if (window.homieBot) return resolve(window.homieBot);
+    const iv = setInterval(() => {
+      if (window.homieBot) {
+        clearInterval(iv);
+        resolve(window.homieBot);
+      }
+    }, 200);
+  });
+}
+
+// Example usage
+await waitForHomie();
+window.homieBot.open();
+```
+
+---
+
+## Embedding & Configuration
+
+At minimum, set `chatbotId` and `domain` on the script tag. Styling and behavior are managed from the Homie dashboard and pulled in automatically by the embed.
+
+```html
+<script
+  src="https://chat.yourhomie.ai/embed.min.js"
+  chatbotId="YOUR-CHATBOT-ID"
+  domain="https://chat.yourhomie.ai"
+  defer
+></script>
+```
+
+Optionally managed via your Homie style settings (fetched by the script):
+
+- `iconColor`, `iconRounded`, `iconImage`, `iconSize`, `iconImagePadding`
+- `iconBottomPadding`, `iconSidePadding`, `iconAlign` (`left` | `right`)
+- `showHoverText`, `isPrivate`, `active`
+
+<Note>
+  Advanced: Some customers provide <code>window.homieUserConfig</code> to pass{" "}
+  <i>user_id</i>, <i>user_hash</i>, and <i>user_metadata</i>. The embed forwards
+  these safely to the iFrame (Base64‑encoded metadata).
+</Note>
+
+---
+
+## Troubleshooting
+
+- **`window.homieBot` is undefined** → Ensure the script actually loads (Network tab) and use `waitForHomie()`.
+- **No response to `sendMessage`** → Check if the site blocks iFrames, uses strict CSP, or delays third‑party scripts. Also, wait for `document.readyState === "complete"`.
+- **Chat opens but no replies** → Verify API base access depending on the domain (`api.yourhomie.ai`, `staging.api.yourhomie.ai`, `dev.api.yourhomie.ai`).
+- **Checkout specific** → The embed preloads the iFrame automatically when a configured `checkoutUrl` matches. Verify exact URLs during testing.
+
+---
+
+## FAQ
+
+**Can I force a new conversation?**  
+Yes: `sendMessage({ text: "...", newChat: true })`.
+
+**How are question events tracked?**  
+If `setId` (and optionally `questionId`) are provided, the script sends a fire‑and‑forget tracking call to the public endpoint in the background. This does **not** affect the message injection itself.
+
+**Can I query the state without opening the chat?**  
+Yes, `isOpen()` returns the state and does not alter the UI.
+
+---
+
+## TL;DR
+
+| Method                         | Purpose                               |
+| ------------------------------ | ------------------------------------- |
+| `open()`                       | Open the chat                         |
+| `close()`                      | Close the chat                        |
+| `toggle()`                     | Toggle open/closed                    |
+| `isOpen()`                     | Read current state                    |
+| `sendMessage(input, options?)` | Inject a message (with retry/timeout) |
+| `getHistory()`                 | Read the current history              |
