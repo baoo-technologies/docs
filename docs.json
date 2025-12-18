@@ -24,6 +24,10 @@
           {
             "group": "Product Questions",
             "pages": ["user-guides/product-questions/pdp-setup"]
+          },
+          {
+            "group": "Configuration",
+            "pages": ["user-guides/configuration/page-settings"]
           }
         ]
       },

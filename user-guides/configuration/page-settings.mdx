@@ -1,0 +1,251 @@
+---
+title: "Page Settings"
+description: "Configure custom chatbot behavior for specific URLs using wildcards — customize welcome messages, proactive popups, and example questions per page."
+---
+
+<Note>
+  Page Settings allow you to create a more personalized experience by
+  customizing chatbot behavior for different sections of your website. Use URL
+  patterns with wildcards to target multiple pages at once.
+</Note>
+
+---
+
+## Overview
+
+Page Settings let you define specific configurations for URLs that match a pattern. This enables you to:
+
+- Show different welcome messages on different pages
+- Display custom proactive popup messages based on page context
+- Provide page-specific example questions
+- Hide the chatbot on specific pages
+- Create more personalized interactions for your customers
+
+For example, on a search page, you could ask customers if they need help with their search, or on `/services` pages, ask if they're looking for a specific service.
+
+---
+
+## Accessing Page Settings
+
+1. Navigate to your assistant in the **Homie Dashboard**.
+2. Go to **Settings** → **Advanced Settings** → **URL Configuration**.
+3. Click **Create** to add a new URL configuration.
+
+<div className="my-4">
+  <img
+    src="/images/configuration/url-config-overview.png"
+    alt="URL Configuration overview in Homie Dashboard"
+    className="rounded-lg shadow"
+  />
+</div>
+
+---
+
+## URL Patterns
+
+<Warning>
+  You must specify the **full URL path** including the domain (e.g.,
+  `https://yourshop.com/search/*`). Path-only patterns (like `/search/*`) will
+  not work. Only `/*` can be used as a wildcard — single `*` without the forward
+  slash will not work.
+</Warning>
+
+You can use wildcards (`/*`) in your URL patterns to match multiple pages:
+
+| Pattern                           | Matches                                                                                                                |
+| --------------------------------- | ---------------------------------------------------------------------------------------------------------------------- |
+| `https://yourshop.com/search/*`   | All pages starting with `/search` (e.g., `https://yourshop.com/search?q=shoes`, `https://yourshop.com/search/results`) |
+| `https://yourshop.com/products/*` | All product detail pages                                                                                               |
+| `https://yourshop.com/services/*` | All pages starting with `/services`                                                                                    |
+| `https://yourshop.com/checkout`   | Only the exact `/checkout` page                                                                                        |
+
+<Tip>
+  Use `/*` wildcards to configure behavior for entire sections of your website
+  without creating individual rules for each page. Make sure to include the full
+  domain (e.g., `https://yourshop.com`) at the beginning of your pattern, and
+  use `/*` (not just `*`) for wildcard matching.
+</Tip>
+
+---
+
+## Basic Configuration
+
+After creating a URL pattern, you can configure the following settings:
+
+### Hide Chatbot
+
+Enable this option to completely hide the chatbot on pages matching this URL pattern.
+
+<div className="my-4">
+  <img
+    src="/images/configuration/hide-chatbot.png"
+    alt="Hide chatbot toggle option"
+    className="rounded-lg shadow"
+  />
+</div>
+
+### Initial Message
+
+Set a custom welcome message that appears when the chat is first opened. This overrides the default welcome message for pages matching this URL pattern.
+
+You can format text using **bold** or _italic_ markdown syntax.
+
+<div className="my-4">
+  <img
+    src="/images/configuration/initial-message.png"
+    alt="Initial message configuration"
+    className="rounded-lg shadow"
+  />
+</div>
+
+**Example:**
+
+```
+Welcome! Need help finding the perfect product? I'm here to assist you.
+```
+
+### Suggested Messages
+
+Provide custom example questions or prompts that appear as quick-reply buttons in the chat interface. Each line corresponds to one suggested message.
+
+<div className="my-4">
+  <img
+    src="/images/configuration/suggested-messages.png"
+    alt="Suggested messages configuration"
+    className="rounded-lg shadow"
+  />
+</div>
+
+**Example:**
+
+```
+What are your shipping options?
+Do you have this in a different size?
+How do I track my order?
+```
+
+---
+
+## Proactive Message Configuration
+
+Proactive messages appear before the customer opens the chat, helping you engage visitors at the right moment.
+
+### Settings
+
+<div className="my-4">
+  <img
+    src="/images/configuration/proactive-message.png"
+    alt="Proactive message configuration"
+    className="rounded-lg shadow"
+  />
+</div>
+
+#### Hide Standard Proactive Message
+
+Enable this to hide the default proactive message on this page and show only your custom message.
+
+#### Message
+
+Enter the text that will be displayed in the proactive popup. This message appears before the chat is opened.
+
+#### Batches (Optional)
+
+Define multiple message variations that can be rotated. Each line corresponds to one batch variant. This is useful for A/B testing different messages.
+
+**Example:**
+
+```
+Need help finding something? Let me assist you!
+Looking for a specific product? I can help!
+Can I help you with your search?
+```
+
+#### Type
+
+Choose when the proactive message should appear:
+
+- **Scroll Depth** — Triggers when the user scrolls to a certain percentage of the page
+- **Time on Page** — Triggers after the user has been on the page for a certain duration
+- **Page View** — Triggers immediately when the page loads
+
+#### Threshold
+
+The value that triggers the proactive message, combined with the unit:
+
+- For **Scroll Depth**: Percentage (0-100)
+- For **Time on Page**: Seconds
+- For **Page View**: N/A (triggers immediately)
+
+#### Delay (Optional)
+
+Add a delay before showing the proactive message, even if the trigger condition is met. Useful for giving users time to interact with the page first.
+
+#### Repeat After (Optional)
+
+Define how long to wait before showing the proactive message again if the user dismisses it. This prevents the message from being too intrusive.
+
+#### Active
+
+Toggle to enable or disable this proactive message. Useful for temporarily disabling messages without deleting the configuration.
+
+---
+
+## Use Cases
+
+### Search Page
+
+Create a URL pattern for `https://yourshop.com/search/*` and configure:
+
+- **Initial Message**: "Hi! Need help finding something? I can assist you with your search."
+- **Suggested Messages**:
+  ```
+  How do I filter products?
+  What are the best sellers?
+  Do you have free shipping?
+  ```
+- **Proactive Message**: "Looking for something specific? Let me help you find it!" (triggers at 30% scroll depth)
+
+### Services Page
+
+For `https://yourshop.com/services/*` pages:
+
+- **Initial Message**: "Welcome! Are you looking for a specific service? I can provide more information."
+- **Suggested Messages**:
+  ```
+  What services do you offer?
+  How much does it cost?
+  How long does it take?
+  ```
+- **Proactive Message**: "Interested in our services? I can answer your questions!" (triggers after 10 seconds)
+
+### Checkout Page
+
+For `https://yourshop.com/checkout`:
+
+- **Hide Standard Proactive Message**: Enabled (to avoid distraction during checkout)
+- **Initial Message**: "Almost done! Need help with payment or shipping options?"
+- **Suggested Messages**:
+  ```
+  What payment methods do you accept?
+  How long is shipping?
+  Can I change my delivery address?
+  ```
+
+---
+
+## Best Practices
+
+- **Start simple**: Begin with a few high-traffic pages and expand based on performance
+- **Test messages**: Use batches to A/B test different proactive messages
+- **Don't be intrusive**: Use delays and thresholds to show messages at appropriate times
+- **Match context**: Ensure your messages are relevant to the page content
+- **Monitor performance**: Review chat analytics to see which configurations perform best
+
+---
+
+## Troubleshooting
+
+- **Message not showing?** Check that the URL pattern matches your page URLs exactly, including the full domain (e.g., `https://yourshop.com/search/*`) and any query parameters if needed
+- **Wildcard not working?** Ensure you use `/*` (not just `*`) as the wildcard pattern and that you've included the full URL path starting with `https://`
+- **Proactive message too frequent?** Adjust the "Repeat After" setting to increase the interval
+- **Configuration not applying?** Verify that the "Active" toggle is enabled for proactive messages
