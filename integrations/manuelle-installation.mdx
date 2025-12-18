@@ -1,0 +1,141 @@
+---
+title: "Manual Installation"
+description: "Manually install the Homie AI chat widget using a script tag or JavaScript config."
+---
+
+<Note>
+  This option works for all platforms that allow custom JavaScript injection. 
+  Works with any website that supports HTML.
+</Note>
+
+---
+
+## Installation Options
+
+You can choose between two installation methods:
+
+<Tabs>
+  <Tab title="Option 1: Script Tag with Attributes">
+    
+This is the simplest method and is recommended if you only need basic integration.
+
+Add the following script tag before the closing `</body>` tag of your HTML page:
+
+```html
+<script 
+  src="https://cdn.yourhomie.ai/embed.min.js"
+  chatbotId="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  domain="https://chat.yourhomie.ai"
+  defer
+></script>
+```
+
+### Optional: Add Store Parameter
+
+If you need a store parameter, add the `storeId` attribute:
+
+```html
+<script 
+  src="https://cdn.yourhomie.ai/embed.min.js"
+  chatbotId="a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+  domain="https://chat.yourhomie.ai"
+  storeId="your-store-id"
+  defer
+></script>
+```
+
+<Warning>
+  Replace <code>a1b2c3d4-e5f6-7890-abcd-ef1234567890</code> with your own <code>chatbotId</code> from the Homie Dashboard.
+</Warning>
+
+  </Tab>
+  <Tab title="Option 2: JavaScript Config">
+    
+This method offers more control and is suitable if you want to set the configuration dynamically.
+
+Add the following script before the closing `</body>` tag of your HTML page:
+
+```html
+<script>
+  (function () {
+    window.homieBotConfig = {
+      chatbotId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      domain: "https://chat.yourhomie.ai",
+    };
+    var script = document.createElement("script");
+    script.src = "https://cdn.yourhomie.ai/embed.min.js";
+    script.defer = true;
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", function () {
+        document.body.appendChild(script);
+      });
+    } else {
+      document.body.appendChild(script);
+    }
+  })();
+</script>
+```
+
+### Optional: Add Store Parameter
+
+If you need a store parameter, add `storeId` to the configuration:
+
+```html
+<script>
+  (function () {
+    window.homieBotConfig = {
+      chatbotId: "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+      domain: "https://chat.yourhomie.ai",
+      storeId: "your-store-id"
+    };
+    var script = document.createElement("script");
+    script.src = "https://cdn.yourhomie.ai/embed.min.js";
+    script.defer = true;
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", function () {
+        document.body.appendChild(script);
+      });
+    } else {
+      document.body.appendChild(script);
+    }
+  })();
+</script>
+```
+
+<Warning>
+  Replace <code>a1b2c3d4-e5f6-7890-abcd-ef1234567890</code> with your own <code>chatbotId</code> from the Homie Dashboard.
+</Warning>
+
+  </Tab>
+</Tabs>
+
+---
+
+## Where do I find my chatbotId?
+
+Open your assistant in the **Homie Dashboard** → **Connect** and copy your `chatbotId` from the displayed script snippet.
+
+<div className="my-4">
+  <img
+    src="/images/integrations/connect.png"
+    alt="Homie dashboard – Connect tab with script snippet"
+    className="rounded-lg shadow"
+  />
+</div>
+
+---
+
+## Test Installation
+
+1. Save your HTML file.
+2. Reload the page in your browser.
+3. The Homie chat bubble should appear in the bottom-right corner.
+4. Click on the bubble to test if the chat works.
+
+---
+
+### Troubleshooting
+
+- **No bubble visible?** Clear your browser cache or test in incognito mode.
+- **Script not loading?** Check the browser console for error messages.
+- **Wrong chatbotId?** Make sure you're using the correct ID from the dashboard.

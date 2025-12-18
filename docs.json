@@ -33,7 +33,7 @@
         "groups": [
           {
             "group": "Integrations",
-            "pages": ["integrations/shopify", "integrations/google-tag"]
+            "pages": ["integrations/shopify", "integrations/google-tag", "integrations/manuelle-installation"]
           }
         ]
       },
